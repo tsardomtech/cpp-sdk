@@ -3,12 +3,11 @@
 
 int main()
 {
-    std::string appId = "9654e365-003c-4044-9620-548d0692410b";
-    std::string publicKey = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAExqFKMC375sH2Y6wJ93buRNTk/T4pUXxBb3q4g6azD3PpeUmrnVZVN336CoLDtokhrsJ1SxPj6fGzE3YGkvHQ0Q==";
+    std::string appId = "58816206-b24c-41d4-a594-8500746a78ee";
+    std::string publicKey = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAELlyGTmNEv3AarudyshJUUA9ig1pOfSl5qWX8g/hkPiieeKlWvv9o4IZmWI4cCrcR0fteVEcUhBvu5GAr/ITBqA==";
 
     Client client(appId, publicKey);
 
-    std::cout << get_ntp_diff() << '\n';
     std::cout << "data[\"user\"][\"id\"] = " << client.subscription.user.id << "\n";
     return 0;
 }
