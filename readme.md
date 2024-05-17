@@ -1,6 +1,6 @@
 # TSAR C++ SDK
 
-The official C++ SDK for TSAR. This is our second most maintained SDK, with Rust being the priority.
+The official C++ SDK for TSAR. This is our second most maintained SDK, with the [Rust SDK](https://github.com/tsarcc/rust-sdk) being our top priority.
 
 ## Want to contribute?
 
