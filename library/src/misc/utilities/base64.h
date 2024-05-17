@@ -117,8 +117,6 @@ namespace base64 {
             0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff,
             0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff };
 
-        // lol
-
         std::array<std::uint32_t, 256> constexpr decode_table_1 = {
             0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff,
             0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff, 0x01ffffff,
