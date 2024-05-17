@@ -1,28 +1,11 @@
-## Windows
+# TSAR C++ SDK
 
-TBD
+The official C++ SDK for TSAR. This is our second most maintained SDK, with Rust being the priority.
 
-## Mac and Linux
+## Want to contribute?
 
-#### Install prerequisites:
+This SDK is open for community contribution! All pull requests will be reviewed by our team.
 
-Mac:
+## Need help?
 
-```sh
-brew install openssl
-```
-
-Linux:
-
-```sh
-apt install openssl
-apt install libssl-dev
-```
-
-### Build app (using GCC / G++)
-
-```sh
-g++ src/main.cpp -o build/main -I /opt/homebrew/Cellar/openssl@3/3.3.0/include -L /opt/homebrew/Cellar/openssl@3/3.3.0/lib -lcurl -lcrypto -std=c++11
-```
-
-These linked file locations may be different depending on how you installed OpenSSL & CURL, so use them accordingly.
+Join our [discord community](https://discord.com/invite/JReXjQCVPw) if you have any questions. For other contact options, please [visit here](https://tsar.cc/about/social).
