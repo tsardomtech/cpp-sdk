@@ -2,6 +2,8 @@
 
 The official C++ SDK for TSAR. This is our second most maintained SDK, with the [Rust SDK](https://github.com/tsarcc/rust-sdk) being our top priority.
 
+![banner](/banner.png)
+
 ## Want to contribute?
 
 This SDK is open for community contribution! All pull requests will be reviewed by our team.
