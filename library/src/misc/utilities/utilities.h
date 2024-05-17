@@ -51,5 +51,5 @@ namespace tsar::utilities {
 	/// Returns the users hardware identification
 	extern std::string get_hwid();
 	/// Returns a string form of the enum
-	extern std::string err_tostring(tsar_errors_t err_code);
+	extern std::string err_tostring(tsar_status_t err_code);
 }

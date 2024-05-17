@@ -112,7 +112,7 @@ namespace tsar {
         return "";
 	};
 
-    std::string utilities::err_tostring(tsar_errors_t err_code) {
+    std::string utilities::err_tostring(tsar_status_t err_code) {
         switch (err_code) {
             case success:
                 return "Success";

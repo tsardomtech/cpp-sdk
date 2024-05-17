@@ -2,7 +2,7 @@
 #include <cstdint>
 
 namespace tsar {
-	enum tsar_errors_t {
+	enum tsar_status_t {
 		/// Successful.
 		success,
 

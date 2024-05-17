@@ -2,7 +2,7 @@
 #include "misc/utilities/utilities.h"
 
 namespace tsar {
-	tsar_errors_t client::init(client_options_t options) {
+	tsar_status_t client::init(client_options_t options) {
 		this->debug_print = options.debug_print;
 		this->client_key = options.client_key;
 		this->app_id = options.app_id;
@@ -13,25 +13,25 @@ namespace tsar {
 			return failed_to_get_hwid;
 		}
 
-		tsar_errors_t auth_err = this->authenticate(
+		tsar_status_t auth_err = this->authenticate(
 			this->app_id,
 			this->hwid,
 			this->client_key);
 
-		if (auth_err != tsar_errors_t::success)
+		if (auth_err != tsar_status_t::success)
 			return auth_err;
 
 		return success;
 	};
 
-	tsar_errors_t client::authenticate(
+	tsar_status_t client::authenticate(
 		const std::string& app_id,
 		const std::string& hwid,
 		const std::string& client_key) {
 
 		this->dbgprint("Authenticating...\n");
 
-		tsar_errors_t validate_err = this->validate_user(
+		tsar_status_t validate_err = this->validate_user(
 			app_id, hwid, client_key
 		);
 
@@ -64,7 +64,7 @@ namespace tsar {
 		return validate_err;
 	}
 
-	tsar_errors_t client::validate_user(
+	tsar_status_t client::validate_user(
 		const std::string& app_id,
 		const std::string& hwid,
 		const std::string& client_key) {
@@ -78,46 +78,46 @@ namespace tsar {
 
 			switch (response.status_code) {
 				case HttpStatus::NotFound:
-					return tsar_errors_t::app_not_found;
+					return tsar_status_t::app_not_found;
 				case HttpStatus::Unauthorized:
-					return tsar_errors_t::user_not_found;
+					return tsar_status_t::user_not_found;
 				default:
 					break;
 			}
 
 			if (response.error.code == cpr::ErrorCode::INTERNAL_ERROR) {
-				return tsar_errors_t::server_error;
+				return tsar_status_t::server_error;
 			}
 
-			return tsar_errors_t::request_failed;
+			return tsar_status_t::request_failed;
 		}
 
 		switch (response.status_code) {
 			case HttpStatus::NotFound:
-				return tsar_errors_t::app_not_found;
+				return tsar_status_t::app_not_found;
 			case HttpStatus::Unauthorized:
-				return tsar_errors_t::user_not_found;
+				return tsar_status_t::user_not_found;
 			case HttpStatus::OK:
 				break;
 			default:
-				return tsar_errors_t::server_error;
+				return tsar_status_t::server_error;
 		}
 
 		nlohmann::json data = nlohmann::json::parse(response.text, nullptr, false);
 		if (data.is_discarded())
-			return tsar_errors_t::failed_to_parse_body;
+			return tsar_status_t::failed_to_parse_body;
 
 		if (!data["data"].is_string())
-			return tsar_errors_t::failed_to_get_data;
+			return tsar_status_t::failed_to_get_data;
 
 		if (!data["signature"].is_string())
-			return tsar_errors_t::failed_to_get_signature;
+			return tsar_status_t::failed_to_get_signature;
 
 		std::string base64_data = data["data"].get<std::string>();
 		std::optional<std::string> data_bytes_opt = base64::safe_from_base64(base64_data);
 
 		if (!data_bytes_opt.has_value())
-			return tsar_errors_t::failed_to_parse_data;
+			return tsar_status_t::failed_to_parse_data;
 
 		std::string base64_signature = data["signature"].get<std::string>();
 		std::string signature = base64::from_base64(base64_signature);
@@ -125,18 +125,18 @@ namespace tsar {
 		std::string data_bytes = data_bytes_opt.value();
 		nlohmann::json data_json = nlohmann::json::parse(data_bytes, nullptr, false);
 		if (data_json.is_discarded())
-			return tsar_errors_t::failed_to_parse_data;
+			return tsar_status_t::failed_to_parse_data;
 
 		if (!data_json["hwid"].is_string())
-			return tsar_errors_t::failed_to_get_signature;
+			return tsar_status_t::failed_to_get_signature;
 
 		if (!data_json["timestamp"].is_number())
-			return tsar_errors_t::failed_to_get_timestamp;
+			return tsar_status_t::failed_to_get_timestamp;
 
 		data_t parsed_data = utilities::parse_data_json(data_json);
 
 		if (hwid != parsed_data.hwid)
-			return tsar_errors_t::old_response;
+			return tsar_status_t::old_response;
 
 		/// NTP timestamp check
 		int64_t timestamp = parsed_data.timestamp;
@@ -152,18 +152,18 @@ namespace tsar {
 			duration = std::chrono::milliseconds( (tt_system_time - ntp_timestamp) * 1000 );
 
 		if (duration.count() > 5000 || timestamp < (tt_system_time - 5))
-			return tsar_errors_t::old_response;
+			return tsar_status_t::old_response;
 
 		/// Signature check
 		if (!utilities::verify_signature(pub_key, data_bytes, signature))
-			return tsar_errors_t::invalid_signature;
+			return tsar_status_t::invalid_signature;
 
 		this->subscription = parsed_data.subscription;
 		this->session = parsed_data.session;
-		return tsar_errors_t::success;
+		return tsar_status_t::success;
 	};
 
-	std::string client::e2s(tsar_errors_t err) {
+	std::string client::e2s(tsar_status_t err) {
 		return utilities::err_tostring(err);
 	}
 }
