@@ -1,2 +1,4 @@
 /build
 .DS_Store
+/library/x64
+/.vs/cpp-sdk
