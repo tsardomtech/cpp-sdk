@@ -46,10 +46,10 @@ namespace tsar {
 			}
 			case user_not_found: {
 				this->dbgprint("Authentication failed: HWID not authorized. "
-					"If a browser window did not open, please visit https://auth.tsar.cc/%s/%s to update your HWID.\n",
+					"If a browser window did not open, please visit https://tsar.cc/auth/%s/%s to update your HWID.\n",
 					app_id.c_str(), hwid.c_str());
 
-				std::string url = std::format("https://auth.tsar.cc/{}/{}", app_id, hwid);
+				std::string url = std::format("https://tsar.cc/auth/{}/{}", app_id, hwid);
 				utilities::open_link(url);
 
 				return user_not_found;
